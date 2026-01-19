@@ -23,8 +23,8 @@ nbnRegistration:
     path: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/inbox
     pollingInterval: 500ms
   outbox:
-    processed: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/processed
-    failed: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/failed
+    processed: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/outbox/processed
+    failed: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/outbox/failed
   gmh:
     url: # Fill in a valid GMH server URL
     token: # Fill in a valid token, generated via the token endpoint of the GMH server
