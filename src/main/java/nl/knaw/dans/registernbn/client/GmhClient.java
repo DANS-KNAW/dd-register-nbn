@@ -13,20 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package nl.knaw.dans.registernbn.client;
 
-package nl.knaw.dans.registernbn.config;
+import nl.knaw.dans.registernbn.core.RegistrationToken;
 
-import io.dropwizard.core.Configuration;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.io.IOException;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
-    @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+public interface GmhClient {
+    void registerNbn(RegistrationToken registrationToken) throws IOException, FailedNbnRegistrationException;
 }

@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package nl.knaw.dans.registernbn.config;
 
-import io.dropwizard.core.Configuration;
+import io.dropwizard.client.JerseyClientConfiguration;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.net.URI;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
+@Data 
+public class GmhConfig {
     @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    private URI url;
+    
+    private String token;
+    
+    @NotNull
+    private JerseyClientConfiguration httpClient;
 }

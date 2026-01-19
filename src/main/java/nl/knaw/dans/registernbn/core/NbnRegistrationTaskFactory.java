@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package nl.knaw.dans.registernbn.core;
 
-package nl.knaw.dans.registernbn.config;
+import lombok.Builder;
+import nl.knaw.dans.lib.util.inbox.InboxTaskFactory;
+import nl.knaw.dans.registernbn.client.GmhClient;
 
-import io.dropwizard.core.Configuration;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.nio.file.Path;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+@Builder
+public class NbnRegistrationTaskFactory implements InboxTaskFactory {
+    private final GmhClient gmhClient;
+    private final Path outboxProcessed;
+    private final Path outboxFailed;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
-    @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    @Override
+    public Runnable createInboxTask(Path path) {
+        return new NbnRegistrationTask(path, gmhClient, outboxProcessed, outboxFailed);
+    }
 }

@@ -19,8 +19,17 @@ package nl.knaw.dans.registernbn;
 import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
+import lombok.extern.slf4j.Slf4j;
+import nl.knaw.dans.lib.util.ClientProxyBuilder;
+import nl.knaw.dans.lib.util.inbox.Inbox;
+import nl.knaw.dans.registernbn.client.GmhClient;
+import nl.knaw.dans.registernbn.client.GmhClientImpl;
 import nl.knaw.dans.registernbn.config.DdRegisterNbnConfig;
+import nl.knaw.dans.registernbn.core.NbnRegistrationTaskFactory;
+import nl.knaw.dans.registernbn.core.PropertiesFileFilter;
+import nl.knaw.dans.registernbn.core.CreationTimeComparator;
 
+@Slf4j
 public class DdRegisterNbnApplication extends Application<DdRegisterNbnConfig> {
 
     public static void main(final String[] args) throws Exception {
@@ -38,8 +47,28 @@ public class DdRegisterNbnApplication extends Application<DdRegisterNbnConfig> {
     }
 
     @Override
-    public void run(final DdRegisterNbnConfig config, final Environment environment) {
-
+    public void run(final DdRegisterNbnConfig configuration, final Environment environment) {
+        environment.lifecycle().manage(
+            Inbox.builder()
+                .inbox(configuration.getNbnRegistration().getInbox().getPath())
+                .interval(Math.toIntExact(configuration.getNbnRegistration().getInbox().getPollingInterval().toMilliseconds()))
+                .executorService(environment.lifecycle().executorService("nbn-registration-inbox").maxThreads(1).minThreads(1).build())
+                .inboxItemComparator(CreationTimeComparator.getInstance())
+                .fileFilter(new PropertiesFileFilter())
+                .taskFactory(NbnRegistrationTaskFactory.builder()
+                    .gmhClient(createGmhClient(configuration))
+                    .outboxProcessed(configuration.getNbnRegistration().getOutbox().getProcessed())
+                    .outboxFailed(configuration.getNbnRegistration().getOutbox().getFailed())
+                    .build())
+                .build());
     }
 
+    private GmhClient createGmhClient(DdRegisterNbnConfig configuration) {
+        return new GmhClientImpl(new ClientProxyBuilder<nl.knaw.dans.gmh.client.invoker.ApiClient, nl.knaw.dans.gmh.client.resources.UrnNbnIdentifierApi>()
+            .apiClient(new nl.knaw.dans.gmh.client.invoker.ApiClient().setBearerToken(configuration.getNbnRegistration().getGmh().getToken()))
+            .basePath(configuration.getNbnRegistration().getGmh().getUrl())
+            .httpClient(configuration.getNbnRegistration().getGmh().getHttpClient())
+            .defaultApiCtor(nl.knaw.dans.gmh.client.resources.UrnNbnIdentifierApi::new)
+            .build());
+    }
 }

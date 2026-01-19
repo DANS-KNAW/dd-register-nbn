@@ -18,4 +18,9 @@
 echo -n "Pre-creating log..."
 TEMPDIR=data
 touch $TEMPDIR/dd-register-nbn.log
+
+mkdir $TEMPDIR/inbox
+mkdir $TEMPDIR/processed
+mkdir $TEMPDIR/failed
+
 echo "OK"

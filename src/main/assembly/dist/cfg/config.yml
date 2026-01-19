@@ -6,12 +6,10 @@ server:
   adminContextPath: /
   applicationConnectors:
     - type: http
-      # Replace with port number unique for this service
-      port: 20000 # TODO: Replace with unique port number
+      port: 20380
   adminConnectors:
     - type: http
-      # Replace with port number unique for this service
-      port: 20001 # TODO: Replace with unique port number
+      port: 20381
   # Logs the requests to the Jetty http server
   requestLog:
     appenders:
@@ -19,6 +17,25 @@ server:
         archive: false
         timeZone: system
         currentLogFilename: /var/opt/dans.knaw.nl/log/dd-register-nbn/request.log
+
+nbnRegistration:
+  inbox:
+    path: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/inbox
+    pollingInterval: 500ms
+  outbox:
+    processed: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/processed
+    failed: /var/opt/dans.knaw.nl/tmp/dd-register-nbn/failed
+  gmh:
+    url: # Fill in a valid GMH server URL
+    token: # Fill in a valid token, generated via the token endpoint of the GMH server
+    httpClient:
+      timeout: 30s
+      connectionTimeout: 15s
+      timeToLive: 1h
+      retries: 2
+      # The GMH server does not handle GZIP compression
+      gzipEnabled: false
+      userAgent: dd-register-nbn
 
 
 #

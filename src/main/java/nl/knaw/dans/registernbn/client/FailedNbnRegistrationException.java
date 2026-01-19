@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package nl.knaw.dans.registernbn.client;
 
-package nl.knaw.dans.registernbn.config;
+public class FailedNbnRegistrationException extends Exception {
+    public FailedNbnRegistrationException(String message) {
+        super(message);
+    }
 
-import io.dropwizard.core.Configuration;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
-    @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    public FailedNbnRegistrationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

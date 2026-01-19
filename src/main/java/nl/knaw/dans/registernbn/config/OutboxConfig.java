@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package nl.knaw.dans.registernbn.config;
 
-import io.dropwizard.core.Configuration;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import nl.knaw.dans.validation.ExistingFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.nio.file.Path;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
+public class OutboxConfig {
     @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    private Path processed;
+    @NotNull
+    private Path failed;
 }

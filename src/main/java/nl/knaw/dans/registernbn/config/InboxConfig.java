@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package nl.knaw.dans.registernbn.config;
 
-import io.dropwizard.core.Configuration;
+import io.dropwizard.util.Duration;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import nl.knaw.dans.validation.ExistingFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.nio.file.Path;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
+public class InboxConfig {
     @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    private Path path;
+    private Duration pollingInterval = Duration.seconds(5);
 }

@@ -1,15 +1,31 @@
-
 server:
   applicationContextPath: /
   adminContextPath: /
   applicationConnectors:
     - type: http
-      # Replace with port number unique for this service
-      port: 20000
+      port: 20380
   adminConnectors:
     - type: http
-      # Replace with port number unique for this service
-      port: 20001
+      port: 20381
+
+nbnRegistration:
+  inbox:
+    path: data/inbox
+    pollingInterval: 500ms
+  outbox:
+    processed: data/processed
+    failed: data/failed
+  gmh:
+    url: https://resolver-ui.acc.kb.seecr.nl
+    token: # fill in
+    httpClient:
+      timeout: 30s
+      connectionTimeout: 15s
+      timeToLive: 1h
+      retries: 2
+      # The GMH server does not handle GZIP compression
+      gzipEnabled: false
+      userAgent: dd-register-nbn
 
 #
 # See https://www.dropwizard.io/en/latest/manual/configuration.html#logging

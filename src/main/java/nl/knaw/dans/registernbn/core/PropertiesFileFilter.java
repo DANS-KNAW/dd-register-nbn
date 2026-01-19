@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package nl.knaw.dans.registernbn.core;
 
-package nl.knaw.dans.registernbn.config;
+import org.apache.commons.io.filefilter.AbstractFileFilter;
 
-import io.dropwizard.core.Configuration;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.io.File;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+public class PropertiesFileFilter extends AbstractFileFilter {
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
-    @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    @Override
+    public boolean accept(File file) {
+        return file.isFile() && file.getName().endsWith(".properties");
+    }
 }

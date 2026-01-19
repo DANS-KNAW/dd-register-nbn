@@ -13,20 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package nl.knaw.dans.registernbn.config;
 
-import io.dropwizard.core.Configuration;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import nl.knaw.dans.convert.jackson.UriAddTrailingSlashConverter;
+import nl.knaw.dans.validation.ExistingFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.net.URI;
+import java.nio.file.Path;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class DdRegisterNbnConfig extends Configuration {
-    @Valid
+public class NbnRegistrationConfig {
     @NotNull
-    private NbnRegistrationConfig nbnRegistration;
+    @Valid
+    private InboxConfig inbox;
+
+    @NotNull
+    @Valid
+    private OutboxConfig outbox;
+
+    @NotNull
+    private GmhConfig gmh;
+
+    private long registrationInterval = 1000;
 }
