@@ -30,7 +30,7 @@
 
     <name>Dd Register Nbn</name>
     <description>Registers NBN with the NBN Resolver</description>
-    <url>https://github.com/DANS-KNAW/dd-register-nbn</url>
+    <url>https://dans-knaw.github.io/dd-register-nbn</url>
     <inceptionYear>2026</inceptionYear>
 
     <scm>
