@@ -65,10 +65,10 @@ public class DdRegisterNbnApplication extends Application<DdRegisterNbnConfig> {
 
     private GmhClient createGmhClient(DdRegisterNbnConfig configuration) {
         return new GmhClientImpl(new ClientProxyBuilder<nl.knaw.dans.gmh.client.invoker.ApiClient, nl.knaw.dans.gmh.client.resources.UrnNbnIdentifierApi>()
-            .apiClient(new nl.knaw.dans.gmh.client.invoker.ApiClient().setBearerToken(configuration.getNbnRegistration().getGmh().getToken()))
+            .apiClientCtor(() -> new nl.knaw.dans.gmh.client.invoker.ApiClient().setBearerToken(configuration.getNbnRegistration().getGmh().getToken()))
             .basePath(configuration.getNbnRegistration().getGmh().getUrl())
             .httpClient(configuration.getNbnRegistration().getGmh().getHttpClient())
-            .defaultApiCtor(nl.knaw.dans.gmh.client.resources.UrnNbnIdentifierApi::new)
+            .proxyCtor(nl.knaw.dans.gmh.client.resources.UrnNbnIdentifierApi::new)
             .build());
     }
 }
